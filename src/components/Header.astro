@@ -1,0 +1,38 @@
+---
+import { SITE_TITLE } from '../consts';
+---
+
+<header>
+	<div class="header-inner">
+		<a href="/" class="header-name-link">
+			<h1 class="header-name">{SITE_TITLE}</h1>
+		</a>
+	</div>
+</header>
+<style>
+	header {
+		margin-top: 25px;
+		margin-bottom: 25px;
+		padding: 15px 0 10px;
+	}
+	.header-inner {
+		max-width: 46rem;
+		width: 100%;
+		margin: 0 auto;
+		padding: 0 20px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.header-name-link {
+		text-decoration: none;
+	}
+	.header-name-link:hover {
+		color: var(--color-text-light);
+	}
+	.header-name {
+		font-size: 1.44em;
+		font-weight: 700;
+		line-height: 1;
+	}
+</style>

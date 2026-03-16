@@ -1,0 +1,89 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+
+type Props = CollectionEntry<'blog'>['data'];
+
+const { title, description, pubDate, updatedDate } = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<article>
+				<div class="container">
+					<div class="title-block">
+						<div class="date">
+							<FormattedDate date={pubDate} />
+							{updatedDate && (
+								<span class="last-updated">
+									(updated <FormattedDate date={updatedDate} />)
+								</span>
+							)}
+						</div>
+						<h1>{title}</h1>
+						<hr />
+					</div>
+					<div class="prose">
+						<slot />
+					</div>
+				</div>
+			</article>
+		</main>
+	</body>
+</html>
+
+<style>
+	.container {
+		max-width: 38.75rem;
+		width: 100%;
+		margin: 0 auto;
+		padding: 0 20px;
+	}
+	.title-block {
+		margin-bottom: 1.3em;
+		padding: 1em 0;
+	}
+	.title-block h1 {
+		font-size: 1.6em;
+		margin-top: 0.3em;
+	}
+	.date {
+		color: var(--color-text-light);
+		font-size: 0.85em;
+	}
+	.last-updated {
+		font-style: italic;
+	}
+	.prose :global(p) {
+		margin-bottom: 1em;
+	}
+	.prose :global(h2) {
+		font-size: 1.3em;
+		margin-top: 1.5em;
+		margin-bottom: 0.5em;
+	}
+	.prose :global(h3) {
+		font-size: 1.1em;
+		margin-top: 1.3em;
+		margin-bottom: 0.5em;
+	}
+	.prose :global(ul),
+	.prose :global(ol) {
+		padding-left: 1.5em;
+		margin-bottom: 1em;
+	}
+	.prose :global(li) {
+		margin-bottom: 0.3em;
+	}
+	.prose :global(img) {
+		border-radius: 4px;
+		margin: 1em 0;
+	}
+</style>

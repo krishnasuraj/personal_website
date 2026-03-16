@@ -1,0 +1,116 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const projects = await getCollection('projects');
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<article>
+				<div class="container">
+					<section>
+						<p>
+							Krishna is a product manager and engineer building AI products to help people achieve and learn more. Previously, Krishna was a product manager at <a href="https://www.commure.com/" target="_blank" rel="noopener noreferrer">Commure</a> (formerly Athelas) building products to improve the businesses of healthcare providers using software and AI. He also worked at <a href="https://windsurf.com/" target="_blank" rel="noopener noreferrer">Windsurf</a> (acquired by <a href="https://cognition.ai/" target="_blank" rel="noopener noreferrer">Cognition</a>), where he became interested in human-agent collaboration.
+						</p>
+						<p>
+							Krishna is pursuing a MBA from Harvard Business School (graduating in May 2026), and is a graduate of Harvard College, concentrating in Computer Science with a secondary in Economics.
+						</p>
+						<div class="social-links">
+							<a href="https://www.linkedin.com/in/krishna-suraj-77645914b/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+							<span class="dot">&middot;</span>
+							<a href="https://github.com/krishnasuraj/" target="_blank" rel="noopener noreferrer">GitHub</a>
+							<span class="dot">&middot;</span>
+							<a href="https://x.com/krisuraj_" target="_blank" rel="noopener noreferrer">X</a>
+						</div>
+					</section>
+
+					<section class="section">
+						<h2 class="section-heading">Writing</h2>
+						<div class="post-list">
+							<div class="post-item">
+								<a href="https://krishnasuraj.substack.com/p/building-moats-around-agentic-coding" target="_blank" rel="noopener noreferrer">Building moats around agentic coding platforms</a>
+							</div>
+						</div>
+					</section>
+
+					<section class="section">
+						<h2 class="section-heading">Projects</h2>
+						<div class="post-list">
+							{projects.map((project) => (
+								<div class="post-item">
+									<a
+										href={project.data.externalUrl || `/projects/${project.id}/`}
+										target={project.data.externalUrl ? "_blank" : undefined}
+										rel={project.data.externalUrl ? "noopener noreferrer" : undefined}
+									>{project.data.title}</a>
+								</div>
+							))}
+						</div>
+					</section>
+				</div>
+			</article>
+		</main>
+	</body>
+</html>
+
+<style>
+	main {
+		width: 100%;
+	}
+	.container {
+		max-width: 46rem;
+		width: 100%;
+		margin: 0 auto;
+		padding: 0 20px;
+	}
+	.social-links {
+		display: flex;
+		align-items: center;
+		gap: 0.5em;
+		color: var(--color-text-light);
+		font-size: 0.9em;
+	}
+	.social-links a {
+		color: var(--color-text-light);
+		text-decoration: none;
+	}
+	.section {
+		margin-top: 1.3em;
+	}
+	.section-heading {
+		font-size: 22px;
+		font-weight: 700;
+		font-style: normal;
+		margin-bottom: 0.7em;
+	}
+	.post-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.8em;
+	}
+	.post-item {
+		padding-left: 1em;
+		position: relative;
+	}
+	.post-item::before {
+		content: '\2022';
+		position: absolute;
+		left: 0;
+	}
+	.post-item a {
+		margin-right: 0.25em;
+	}
+</style>
