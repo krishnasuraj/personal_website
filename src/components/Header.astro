@@ -1,12 +1,23 @@
 ---
 import { SITE_TITLE } from '../consts';
+
+interface Props {
+	profileImageSrc?: string;
+	profileImageAlt?: string;
+}
+
+const { profileImageSrc, profileImageAlt = 'Profile photo' } = Astro.props;
+const hasProfile = Boolean(profileImageSrc);
 ---
 
-<header>
-	<div class="header-inner">
+<header class={hasProfile ? 'with-profile' : undefined}>
+	<div class={`header-inner${hasProfile ? ' has-profile' : ''}`}>
 		<a href="/" class="header-name-link">
 			<h1 class="header-name">{SITE_TITLE}</h1>
 		</a>
+		{profileImageSrc && (
+			<img class="profile-photo" src={profileImageSrc} alt={profileImageAlt} />
+		)}
 	</div>
 </header>
 <style>
@@ -15,17 +26,25 @@ import { SITE_TITLE } from '../consts';
 		margin-bottom: 25px;
 		padding: 15px 0 10px;
 	}
+	header.with-profile {
+		margin-bottom: 8px;
+	}
 	.header-inner {
-		max-width: 46rem;
+		max-width: 56rem;
 		width: 100%;
 		margin: 0 auto;
 		padding: 0 20px;
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
+		align-items: flex-start;
+		gap: 1.5rem;
+	}
+	.header-inner.has-profile {
+		display: block;
 	}
 	.header-name-link {
 		text-decoration: none;
+		flex-shrink: 0;
 	}
 	.header-name-link:hover {
 		color: var(--color-text-light);
@@ -34,5 +53,30 @@ import { SITE_TITLE } from '../consts';
 		font-size: 1.44em;
 		font-weight: 700;
 		line-height: 1;
+	}
+	.profile-photo {
+		width: 150px;
+		height: 150px;
+		float: right;
+		display: block;
+		margin: -1.65rem 0 0.9rem 1.35rem;
+		border-radius: 50%;
+		object-fit: cover;
+		object-position: center;
+		flex-shrink: 0;
+	}
+
+	@media (max-width: 767px) {
+		.header-inner:not(.has-profile) {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+		header.with-profile {
+			margin-bottom: 14px;
+		}
+		.profile-photo {
+			float: none;
+			margin: 0.75rem 0 0 0;
+		}
 	}
 </style>
